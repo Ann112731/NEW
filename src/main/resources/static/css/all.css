@@ -1,0 +1,76 @@
+
+body{
+    height: 100%;
+    width: 100%;
+}
+.config{
+    margin: 0;
+    position: relative;
+    margin-top: 1%;
+    left: 16%;
+    width: 70%;
+}
+
+.title{
+    padding-top: 0.5%;
+
+    width: 100%;
+}
+
+#bottoms{
+    position: absolute;
+    width: 100%;
+    bottom: -2.4%;
+    height: 6%;
+}
+
+p{
+    text-align: center;
+}
+
+
+.regist{
+    margin: 0;
+    position: relative;
+    margin-top: 1%;
+    left: 16%;
+    width: 70%;
+    display: none;
+}
+
+#submit{
+    margin-left: 50%;
+}
+
+#cancle{
+    margin-left: 5%;
+}
+
+
+#log{
+    margin-left: 80%;
+}
+
+#modalDeny{
+    position: absolute;
+
+    top:42%;
+
+    left:50%;
+}
+
+#modallogin{
+    position: absolute;
+
+    top:42%;
+
+    left:50%;
+}
+
+#modalregist{
+    position: absolute;
+
+    top:42%;
+
+    left:50%;
+}

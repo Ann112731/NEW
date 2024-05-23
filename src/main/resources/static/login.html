@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Library System</title>
+    <link rel="stylesheet" href="./css/all.css">
+    <link rel="stylesheet" href="./css/reset.css">
+    <link rel="shortcut icon" href="./img/library.ico" />
+    <script src="./js/login.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/semantic-ui/2.2.10/semantic.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.3/semantic.min.js"></script>
+</head>
+<script type="text/javascript">
+  $(function () {
+        $(".ui.form").form({
+            fields:{
+                uid:{
+                    indentfier:"uid",
+                    rules:[{
+                        type:"empty",
+                    }]
+                },
+                pwd:{
+                    indentfier:"pwd",
+                    rules:[{
+                        type:"empty",
+                    }]
+                }
+            }
+        })
+    })
+</script>
+<body>
+<div >
+
+    <div class="title">
+        <h2 class="ui header">
+            <img class="ui image" src="./img/book.png">
+            <div class="content">
+              Library System
+            </div>
+        </h2>
+        <h3 class="ui dividing header">
+        </h3>
+    </div>
+    <div class="config" id="config">
+        <h2 class="ui center middle aligned icon header">
+            <i class="circular users icon"></i>
+        </h2>
+        <div class="ui placeholder segment"  id="login">
+            <div class="ui two column very relaxed stackable grid">
+              <div class="column">
+                <div class="ui form">
+                  <div class="field">
+                    <label>Username</label>
+                    <div class="ui left icon input" >
+                      <input type="text" placeholder="Username" id="uid" name="uid">
+                      <i class="user icon"></i>
+                    </div>
+                  </div>
+                  <div class="field">
+                    <label>Password</label>
+                    <div class="ui left icon input">
+                      <input type="password"  placeholder="Password" id="pwd" name="pwd">
+                      <i class="lock icon"></i>
+                    </div>
+                    <div class="ui vertical segment">
+                      <div class="ui form">
+                        <div class="inline fields">
+                          <label>User Type</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                          <div class="field">
+                            <div class="ui radio checkbox">
+                              <input type="radio" name="UserType" checked="checked" value="u">
+                              <label>User</label>
+                            </div>
+                          </div>
+                          <div class="field">
+                            <div class="ui radio checkbox">
+                              <input type="radio" name="UserType" value="a">
+                              <label>Administaotr</label>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    
+                  </div>
+                  <div class="ui blue submit button" id="log"  onclick="submit()">Login</div>
+                </div>
+              </div>
+              <div class="middle aligned column" id="changeRegist">
+                <div class="ui big button" onclick="changeRegist()">
+                  <i class="signup icon"></i>
+                  Sign Up
+                </div>
+              </div>
+            </div>
+            <div class="ui vertical divider">
+              Or
+            </div>
+          </div>
+    </div>
+
+
+    <div class="regist" id="regist">
+      <h2 class="ui center middle aligned icon header">
+          <i class="circular users icon"></i>
+      </h2>
+      <div class="ui placeholder segment"  >
+          <div class="ui two column very relaxed stackable grid">
+            <div class="column">
+              <div class="ui form">
+                <div class="field">
+                  <label>Username</label>
+                  <div class="ui left icon input">
+                    <input type="text" placeholder="Username" id="uid2">
+                    <i class="user icon"></i>
+                  </div>
+                </div>
+                  <div class="field">
+                  <label>Password</label>
+                  <div class="ui left icon input">
+                    <input type="password"  placeholder="Password" id="pwd2">
+                    <i class="lock icon"></i>
+                  </div>
+                  <div>&nbsp;</div>
+                  <div class="field">
+                    <label>Confirm password</label>
+                    <div class="ui left icon input">
+                      <input type="password" placeholder="Confirm Password" id="pwdConfirm">
+                      <i class="lock icon"></i>
+                    </div>
+                  </div>
+                </div>
+                <div class="ui blue submit button"  id="submit" onclick="submitRegist()">Regist</div>
+                <div class="ui red cancle button" id="cancle" onclick="changeLogin()">Cancle</div>
+              </div>
+            </div>
+            <div class="middle aligned column" onclick="changeLogin()">
+              <div class="ui big button" >
+                <i class="signup icon"></i>
+                Login
+              </div>
+            </div>
+          </div>
+          <div class="ui vertical divider">
+            Or
+          </div>
+        </div>
+
+  </div>
+    
+<div class="ui inverted segment" id="bottoms">
+  <p>Library System</p>
+</div>
+
+</div>
+<div class="ui basic modal"  id="modalDeny">
+    <div class="ui icon header">
+        <i class="red large x icon"></i>
+        错误
+    </div>
+    <div class="content">
+        <p>用户不存在或者密码错误！请重新检查！</p>
+    </div>
+    <div class="actions">
+        <div class="ui green ok inverted button">
+            <i class="checkmark icon"></i>
+            确定
+        </div>
+    </div>
+</div>
+
+
+
+<div class="ui modal"  id="modallogin">
+    <div class="ui icon header">
+        <i class="green large arrow circle right icon"></i>
+        登录成功
+    </div>
+    <div class="content">
+        <p>欢迎进入图书馆系统~</p>
+    </div>
+
+</div>
+
+<div class="ui basic modal"  id="modalregist">
+    <div class="ui icon header">
+        <i class="red large x icon"></i>
+        错误
+    </div>
+    <div class="content">
+        <p>请确认第二次输入的密码与第一次一致！</p>
+    </div>
+    <div class="actions">
+        <div class="ui green ok inverted button">
+            <i class="checkmark icon"></i>
+            确定
+        </div>
+    </div>
+</div>
+
+
+<div class="ui modal"  id="registsuccess">
+    <div class="ui icon header">
+        <i class="green large arrow circle right icon"></i>
+        注册成功
+    </div>
+    <div class="content">
+        <p>进入登录界面~</p>
+    </div>
+</div>
+
+
+<div class="ui basic modal"  id="empty">
+    <div class="ui icon header">
+        <i class="red large x icon"></i>
+        错误
+    </div>
+    <div class="content">
+        <p>用户名和密码不能为空！</p>
+    </div>
+    <div class="actions">
+        <div class="ui green ok inverted button">
+            <i class="checkmark icon"></i>
+            确定
+        </div>
+    </div>
+</div>
+</body>
+<script>
+
+</script>
+</html>

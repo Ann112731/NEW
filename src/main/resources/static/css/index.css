@@ -1,0 +1,17 @@
+#bottoms{
+    position: absolute;
+    width: 100%;
+    bottom: -2.3%;
+    height: 6%;
+}
+
+p{
+    text-align: center;
+}
+
+
+#leftMenu{
+    position: relative;
+    top: -12px;
+    height: 75%;
+}

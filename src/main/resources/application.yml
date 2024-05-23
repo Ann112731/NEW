@@ -1,0 +1,26 @@
+server:
+  port: 8080
+
+spring:
+  datasource:
+    url: jdbc:mysql://101.201.143.127:3307/library?useUnicode=true&characterEncoding=utf-8&useSSL=true&serverTimezone=UTC
+    username: root
+    password: tw550409
+    driver-class-name: com.mysql.cj.jdbc.Driver
+mybatis:
+  type-aliases-package: com.lyx.library.pojo
+  mapper-locations: classpath:mapping/*.xml
+
+logging:
+  file:
+    name: log/log.log
+  level:
+    root: info
+    library: debug
+
+
+Pagehelper:
+  helperDialect: mysql
+  reasonable: true
+  supportMethodsArguments: true
+  params: count=countSql

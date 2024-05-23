@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lyx.library.dao.BorrowHistoryDao">
+
+    <insert id="lendBook" parameterType="com.lyx.library.pojo.BorrowHistory">
+        insert into `borrowhistory`(book_name,book_id,user_name,borrow_date,return_date,status)
+        values(#{book_name},#{book_id},#{user_name},#{borrow_date},#{return_date},#{status})
+    </insert>
+
+    <update id="setStatus" >
+        update `borrowhistory`
+        set status="已还"
+        where book_id=#{book_id} and user_name=#{user_name};
+    </update>
+
+    <select id="listRecord" parameterType="string" resultType="com.lyx.library.pojo.BorrowHistory">
+        select * from `borrowhistory` where user_name=#{username}
+    </select>
+
+    <update id="updateUser" parameterType="string">
+        update `borrowhistory` set user_name=#{new_name}
+        where user_name=#{old_name}
+    </update>
+
+
+    <select id="adminHistory" resultType="com.lyx.library.pojo.BorrowHistory">
+        select * from `borrowhistory`
+    </select>
+</mapper>

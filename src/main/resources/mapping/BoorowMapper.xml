@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lyx.library.dao.BoorowDao">
+
+    <insert id="lendBook" parameterType="com.lyx.library.pojo.Borrow">
+        insert into `borrow`(book_name,book_id,user_name,borrow_date,return_date)
+        values(#{book_name},#{book_id},#{user_name},#{borrow_date},#{return_date})
+    </insert>
+
+    <delete id="returnBook" parameterType="integer">
+        delete from `borrow` where book_id=#{book_id}
+    </delete>
+    
+    <select id="listAllBorrowBook" parameterType="string" resultType="com.lyx.library.pojo.Borrow">
+        select *  from `borrow` where user_name=#{user_name}
+    </select>
+
+    <update id="updateUser" parameterType="string">
+        update `borrow` set user_name=#{new_name}
+        where user_name=#{old_name}
+    </update>
+    
+</mapper>

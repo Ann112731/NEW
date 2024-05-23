@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./css/reset.css">
+    <link rel="stylesheet" href="./css/index.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/semantic-ui/2.2.10/semantic.min.css">
+    <script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.3/semantic.min.js"></script>
+    <script src="./js/user_search.js"></script>
+    <link rel="shortcut icon" href="./img/library.ico" />
+    <link rel="stylesheet" href="./css/borrowBook.css">
+    <link rel="stylesheet" href="./css/information.css">
+    <script src="https://cdn.staticfile.org/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+    <title>个人信息</title>
+</head>
+<script>
+  $(document).ready(function(){
+    $("#username").val($.cookie('username'));
+    $("#username").attr("disabled","disabled");
+    $("#pwd").val("");
+    $("#update_username").attr("disabled","disabled");
+    $("#update_pwd").attr("disabled","disabled");
+    $("#sub").attr('disabled',true);
+  });
+     
+</script>
+<body>
+    <div class="ui middle inverted segment">
+        <div class="ui inverted secondary menu">
+            <h1 class="ui violet inverted header">图书管理系统</h1>
+          <div class="right menu">
+            <div class="item">
+              <div class="item" style="position: relative; left: 40px;">
+              <i class="circular small inverted teal user icon"></i>
+              </div>
+            </div>
+            <div class="item">
+                <div class="ui big red button" onclick="breakOut()">退出登录</div>
+            </div>
+          </div>
+        </div>
+    </div>
+
+    <div class="ui large vertical menu" id="leftMenu">
+        <div class="item">
+          <div class="header">借阅管理</div>
+          <div class="menu">
+            <a class="item" href="record.html">借阅记录</a>
+            <a class="item" href="borrowBook.html">借阅书籍</a>
+          </div>
+        </div>
+        <div class="item">
+          <div class="header">书籍管理</div>
+          <div class="menu">
+            <a class="item" href="return.html">归还书籍</a>
+            <a class="item" href="searchBook.html">查询书籍</a>
+            <a class="item" href="chart.html">书籍数据分析</a>
+          </div>
+        </div>
+        <div class="item">
+          <div class="header">个人信息管理</div>
+          <div class="menu">
+            <a class="item" href="personalInformation.html">用户信息管理</a>
+          </div>
+        </div>
+<!--        <div class="item">-->
+<!--          <div class="header">支持</div>-->
+<!--          <div class="menu">-->
+<!--            <a class="item" href="Support.html">E-mail Support</a>-->
+<!--          </div>-->
+<!--        </div>-->
+      </div>
+      <div class="mine" id="mine">
+        <div class="config">
+          <h2 class="ui icon header">
+            <i class="settings icon"></i>
+            <div class="content">
+              账号设置
+            </div>
+          </h2>
+        </div>
+        <form class="ui fluid form" id="update">
+          <div class="field">
+            <label>Username</label>
+            <div class="ui left icon input">
+              <input type="text" placeholder="Username" id="username">
+              <i class="user icon"></i>
+            </div>
+          </div>
+          <div class="field">
+            <label>Password</label>
+            <div class="ui left icon input focus">
+              <input type="password"  placeholder="Password" id="pwd"  onblur="confirm()">
+              <i class="lock icon"></i>
+            </div>
+              
+          </div>
+          <div class="updateForm" id="updateForm">
+            <div class="ui divider"></div>
+            <div class="field">
+              <label>New Username</label>
+              <div class="ui left icon input">
+                <input type="text" placeholder="New Username" id="update_username">
+                <i class="user icon"></i>
+              </div>
+            </div>
+            <div class="field">
+              <label>New Password</label>
+              <div class="ui left icon input focus">
+                <input type="password"  placeholder="New Password" id="update_pwd">
+                <i class="lock icon"></i>
+              </div>
+            </div>
+            <div class="ui vertical buttons" id="button">
+              <button class="ui positive massive  button" id="sub" type="button" onclick="submitUpdate()">确定修改</button>
+            </div>
+          </div>
+          
+        </form>
+        
+        
+      </div>
+      <div class="ui inverted segment" id="bottoms">
+        <p>Library System</p>
+      </div>
+
+      <div class="ui modal" id="break">
+        <i class="close icon"></i>
+        <div class="header">
+          确定退出
+        </div>
+        
+        <div class="actions">
+            <div class="ui red deny button">
+              取消
+            </div>
+            <div class="ui positive right labeled icon button">
+              确定
+              <i class="checkmark icon"></i>
+            </div>
+        </div>
+     </div>
+    <div class="ui modal"  id="breakSuccess" style="position: absolute;left: 70%;width: 30%;">
+        <div class="ui icon header">
+            <i class="green large arrow circle right icon"></i>
+            退出成功
+        </div>
+  </div>
+</body>
+<script>
+
+  function confirm(){
+    $.ajax({
+                type: 'POST',
+                url: '/update',
+                data: {
+                    username:$.cookie('username'),
+                    pwd:$("#pwd").val(),
+                },
+                success:function (data) {
+
+                  if(data == "no"){
+                    alert("密码错误！")
+                    
+                  }else if(data == "success"){
+                    alert("可以修改相关信息了！")
+                    $("#update_username").removeAttr("disabled");
+                    $("#update_pwd").removeAttr("disabled");
+                    $("#sub").removeAttr("disabled");
+
+                  }
+                }
+          })
+  }
+
+
+  function submitUpdate(){
+    $.ajax({
+                type: 'POST',
+                url: '/updateSuccess',
+                data: {
+                    new_username:$("#update_username").val(),
+                    new_pwd:$("#update_pwd").val(),
+                    old_username: $.cookie('username'),
+                },
+                success:function (data) {
+                  if(data == "success"){
+                    console.log(data)
+                    alert("修改成功");
+                    var now = new Date();
+                    now.setTime(now.getTime() + 5 * 60 * 1000);
+                    $("#username").val($("#update_username").val());
+                    $.removeCookie('username');
+                    $.cookie('username',$("#update_username").val() , { expires: now });
+                    $("#update_username").val("");
+                    $("#update_pwd").val("");
+                    $("#pwd").val("")
+                    $("#update_username").attr("disabled","disabled");
+                    $("#update_pwd").attr("disabled","disabled");
+                    $("#sub").attr('disabled',true);
+                  }
+                  
+                }
+          })
+  }
+
+</script>
+<script>
+  function breakOut(){
+    $('#break').modal('show')
+    .modal({
+          onApprove : function() {
+                 $('#breakSuccess').modal('show')
+                  setTimeout(function(){
+                    window.location.href = "login.html" 
+                  }, 1500);
+      
+           }
+     })
+  }
+</script>
+</html>

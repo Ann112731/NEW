@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./css/reset.css">
+    <link rel="stylesheet" href="./css/index.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/semantic-ui/2.2.10/semantic.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.3/semantic.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/axios/0.21.1/axios.min.js"></script>
+    <script src="https://cdn.staticfile.org/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+    <link rel="stylesheet" href="./css/return.css">
+    <script src="./js/user_search.js"></script>
+    <link rel="shortcut icon" href="./img/library.ico" />
+    <link rel="stylesheet" href="./css/support.css">
+    <link rel="stylesheet" href="./css/record.css">
+    
+
+    <title>图书归还</title>
+</head>
+
+<body>
+  
+    <div class="ui middle inverted segment">
+        <div class="ui inverted secondary menu">
+            <h1 class="ui violet inverted header">图书管理系统</h1>
+          <div class="right menu">
+            <div class="item">
+              <div class="item" style="position: relative; left: 40px;">
+                <i class="circular small inverted teal user icon"></i>
+              </div>
+            </div>
+            <div class="item">
+                <div class="ui big red button" onclick="breakOut()">退出登录</div>
+            </div>
+          </div>
+        </div>
+    </div>
+
+
+    <div class="ui large vertical menu" id="leftMenu">
+        <div class="item">
+          <div class="header">借阅管理</div>
+          <div class="menu">
+            <a class="item" href="record.html">借阅记录</a>
+            <a class="item" href="borrowBook.html">借阅书籍</a>
+          </div>
+        </div>
+        <div class="item">
+          <div class="header">书籍管理</div>
+          <div class="menu">
+            <a class="item" href="return.html">归还书籍</a>
+            <a class="item" href="searchBook.html">查询书籍</a>
+            <a class="item" href="chart.html">书籍数据分析</a>
+          </div>
+        </div>
+        <div class="item">
+          <div class="header">个人信息管理</div>
+          <div class="menu">
+            <a class="item" href="personalInformation.html">用户信息管理</a>
+          </div>
+        </div>
+<!--        <div class="item">-->
+<!--          <div class="header">支持</div>-->
+<!--          <div class="menu">-->
+<!--            <a class="item" href="Support.html">E-mail Support</a>-->
+<!--          </div>-->
+<!--        </div>-->
+      </div>
+      <div class="mine" id="mine">
+        <table class="ui selectable inverted teal table" id="return">
+            <thead>
+              <tr><th>图书号码</th>
+              <th>图书名</th>
+              <th>借阅时间</th>
+              <th>归还时间</th>
+              <th>归还</th>
+            </tr></thead>
+            <tbody>
+                <tr v-if='isRecord'>
+                    <th colspan="5" style="text-align: center;height:50px;font-size: 25px;color: rgb(0, 255, 115);line-height: 50px;" >暂无记录</th>
+                  </tr>
+                <tr  v-for ="(book,index) in books":key="index">
+                    <td>{{book.book_id}}</td>
+                    <td>{{book.book_name}}</td>
+                    <td>{{book.borrow_date}}</td>
+                    <td>{{book.return_date}}</td>
+                    <td><button class="ui small red button" @click=returnBook(book.book_id,book.book_name,index)>归还</button></td>
+                </tr>
+            </tbody>
+            <tfoot v-if='record'>    
+              <tr><th colspan="5">
+                   <div  v-cloak class="page">
+                          <ul class="pagination">
+                              <li>
+                                  <a v-if="currentPage == 1" >首页</a>
+                                  <a v-else href="javascript:;" @click="next(1)">首页</a>
+                              </li>
+                              <li v-if="currentPage<=1"><a>上一页</a></li>
+                              <li v-else><a href="javascript:;" @click="next(currentPage-1)">上一页</a></li>
+                  
+                  
+                              <li v-for="item in pagingList">
+                                  <a v-if="currentPage==item.key || sign ==item.key" >{{item.key}}</a>
+                                  <a v-else href="javascript:;" @click="next(item.value)">{{item.key}}</a>
+                              </li>
+                  
+                              <li v-if="currentPage>=totalPageCount"><a>下一页</a></li>
+                              <li v-else><a href="javascript:;" @click="next(currentPage+1)">下一页</a></li>
+                              <li>
+                                  <a v-if="totalPageCount == currentPage">尾页</a>
+                                  <a v-else href="javascript:;" @click="next(totalPageCount)">尾页</a>
+                              </li>
+                          </ul>
+                      </div>
+                  </th>
+            </tr>
+            <tr>
+              <th colspan="5">
+                  <p>当前页为第{{currentPage||0}}页,共{{totalPageCount||0}}页&nbsp;&nbsp;&nbsp;
+              </th>
+            </tr>
+          </tfoot> 
+        </table>
+      </div>
+      <div class="ui inverted segment" id="bottoms">
+        <p>Library System</p>
+      </div>
+      <div class="ui modal" id="break">
+        <i class="close icon"></i>
+        <div class="header">
+          确定退出
+        </div>
+        
+        <div class="actions">
+            <div class="ui red deny button">
+              取消
+            </div>
+            <div class="ui positive right labeled icon button">
+              确定
+              <i class="checkmark icon"></i>
+            </div>
+        </div>
+     </div>
+    <div class="ui modal"  id="breakSuccess" style="position: absolute;left: 70%;width: 30%;">
+        <div class="ui icon header">
+            <i class="green large arrow circle right icon"></i>
+            退出成功
+        </div>
+  </div>
+</body>
+
+<script>
+    var app = new Vue({
+        el: '#mine',
+        data: {
+            books:[],
+            sign:'...',
+              // 省略号位置
+            signIndex:4,
+              // 总页数
+            totalPageCount: 4,
+            // 当前页
+            currentPage:1,
+              // 显示在页面的数组列表
+            pagingList:[],
+            isRecord: false,
+
+            record: true,
+        },
+        watch: {
+              totalPageCount (val) {
+                  var that = this
+                  if (!val || val == '') return;
+                  that.currentPage = 1;
+                  that.init()
+              },
+              currentPage (val) {
+                  var that = this
+                  that.init()
+              }
+        },
+        methods:{
+            returnBook(book_id,book_name,index){
+                
+                axios({
+                        method:"post",
+                        url:"/returnButton",
+                        withCredentials:true,
+                        params: {
+                            bookid: book_id,
+                            username:$.cookie('username'),
+                        }
+                    }).then((res)=>{
+                        if(res.data == "success"){
+                            alert("归还成功")
+                            this.books.splice(index,1);
+                        }
+                      
+                      
+                    }).catch(err => {
+                        console.log('error');
+                    });
+                    console.log(this.books.length);
+                    if(this.books.length-1 == 0){
+                        this.isRecord = true;
+                        this.record = false;
+                    }else{
+                        this.record = true;
+                        this.isRecord = false
+                    }
+            }
+            ,
+              next (num) {
+                  var that = this
+                  if (num <= 1) that.currentPage = 1;
+                  else if (num >= that.totalPageCount) that.currentPage = that.totalPageCount;
+                  else that.currentPage = num;
+                  console.log(this.create);
+                  axios({
+                        method:"post",
+                        url:"/listReturn",
+                        withCredentials:true,
+                        params: {
+                            username:$.cookie('username'),
+                            currentPage: this.currentPage,
+                        }
+                    }).then((res)=>{
+                      console.log(res.data)
+                      this.totalPageCount = res.data.totalpage[0];
+                      this.books = res.data.return;
+                    }).catch(err => {
+                        console.log('error');
+                    });
+              },
+            // 初始化数据
+            fetchData () {
+                  var that = this
+
+                  that.pagingList = [];
+                  var tmp = null;
+
+                  
+                  if ((that.totalPageCount) > 6) {
+                      if (((that.totalPageCount-1) == (that.totalPageCount - that.currentPage)) && (that.totalPageCount - that.currentPage) > 5) {
+                          for (var i=1;i<7;i++) {
+                              if (i < that.signIndex) {
+                                  tmp = {key:i, value:i }
+                              } else if (i== that.signIndex) {
+                                  tmp = {key:that.sign, value:0 }
+                              } else if (i == (that.signIndex + 1) ) {
+                                  tmp = {key:that.totalPageCount - 1, value:that.totalPageCount - 1 }
+                              } else {
+                                  tmp = {key:that.totalPageCount, value:that.totalPageCount }
+                              }
+                              that.pagingList.push(tmp)
+                          }
+                      } else if (((that.totalPageCount - that.currentPage) <= that.signIndex)){
+                          var starNum = that.totalPageCount - 5;
+                          for (var i=starNum;i<starNum+6;i++) {
+                              tmp = {key:i, value:i }
+                              that.pagingList.push(tmp)
+                          }
+                      } else {
+                          var starNum = that.currentPage - 1;
+                          for (var i=1;i<7;i++) {
+                              if (i < that.signIndex) {
+                                  tmp = {key:(starNum - 1) + i, value:(starNum - 1) + i }
+                              } else if (i== that.signIndex) {
+                                  tmp = {key:that.sign, value:0 }
+                              } else if (i == (that.signIndex + 1) ) {
+                                  tmp = {key:that.totalPageCount - 1, value:that.totalPageCount - 1 }
+                              } else {
+                                  tmp = {key:that.totalPageCount, value:that.totalPageCount }
+                              }
+                              that.pagingList.push(tmp)
+                          }
+                      }
+                  } else {
+                      for (var i =0; i <that.totalPageCount; i++) {
+                          tmp = {key:i+1, value:i+1 }
+                          that.pagingList.push(tmp)
+                      }
+                  }
+              },
+              init () {
+                  var that = this
+
+                  that.fetchData()
+              }
+        },
+        mounted () {
+              var that = this
+
+              that.init()
+        },
+        created: function (){
+            axios({
+                method:"post",
+                url:"/listReturn",
+                withCredentials:true,
+                params: {
+                    username:$.cookie('username'),
+                    currentPage: this.currentPage,
+                }
+            }).then((res)=>{
+              console.log(res.data)
+              if(res.data.return.length == 0){
+                  this.isRecord = true;
+                  this.record = false;
+              }else{
+                this.record = true;
+                this.isRecord = false
+              }
+              this.totalPageCount = res.data.totalpage[0];
+              this.books = res.data.return;
+              
+            }).catch(err => {
+                console.log('error');
+            });
+        }
+    })
+</script>
+<script>
+    function breakOut(){
+    $('#break').modal('show')
+    .modal({
+          onApprove : function() {
+                 $('#breakSuccess').modal('show')
+                  setTimeout(function(){
+                    window.location.href = "login.html" 
+                  }, 1500);
+      
+           }
+     })
+  }
+</script>
+</html>

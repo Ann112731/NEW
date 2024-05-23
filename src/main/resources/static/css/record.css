@@ -1,0 +1,16 @@
+.page{
+    position: relative;
+    left: 39%; 
+    
+} 
+
+.pagination{list-style: none; text-align: center;margin: 0 auto;} 
+.pagination > li {float: left; margin: 0 5px; }
+a{
+   color:cornsilk
+}
+
+a:hover{
+   color: rgb(245, 199, 16);
+}
+[v-cloak] {display: none; } 

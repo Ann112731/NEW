@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lyx.library.dao.DeleteBookDao">
+    <insert id="insertDeleteBook"  parameterType="com.lyx.library.pojo.Book">
+        insert into `deletebook`(`book_id`,`book_name`,`book_publish`,`book_author`,`book_category`)
+        values (#{book_id},#{book_name},#{book_publish},#{book_author},#{book_category})
+    </insert>
+
+
+    <select id="selectOneBook" parameterType="integer" resultType="com.lyx.library.pojo.DeleteBook">
+        select * from `deletebook` where `book_id`=#{book_id};
+    </select>
+
+
+    <delete id="deleteBook" parameterType="integer">
+        delete from `deletebook` where book_id=#{book_id};
+    </delete>
+
+    <select id="countCategory"  resultMap="count">
+        SELECT book_category,count(*) num FROM `deletebook` GROUP BY book_category
+    </select>
+
+    <resultMap id="count" type="com.lyx.library.pojo.CategoryCount">
+        <result column="book_category" property="category" jdbcType="VARCHAR" />
+        <result column="num" property="count" jdbcType="INTEGER" />
+    </resultMap>
+
+
+</mapper>

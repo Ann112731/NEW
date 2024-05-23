@@ -1,0 +1,36 @@
+#update{
+    position: relative;
+
+    margin-top: 3%;
+
+    width: 40%;
+
+    left: 25%;
+}
+
+.config{
+    height: 20%;
+
+    margin-top: 2%;
+
+    position: relative;
+
+    left: 40%;
+}
+
+#confirm{
+    position: absolute;
+    left: 100%;
+    top: 33%;
+}
+
+#button{
+    position: absolute;
+     
+    left: 100%;
+
+    width: 45%;
+
+    top: 70%;
+}
+

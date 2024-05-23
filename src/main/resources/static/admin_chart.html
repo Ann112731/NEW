@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./css/reset.css">
+    <link rel="stylesheet" href="./css/index.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/semantic-ui/2.2.10/semantic.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.3/semantic.min.js"></script>
+    <script src="./js/user_search.js"></script>
+    <link rel="shortcut icon" href="./img/library.ico" />
+    <link rel="stylesheet" href="./css/support.css">
+    <script src="https://cdn.bootcss.com/echarts/4.2.1-rc1/echarts-en.common.js"></script>
+
+    <title>E-mail Support</title>
+</head>
+
+<body>
+  
+    <div class="ui middle inverted segment">
+        <div class="ui inverted secondary menu">
+            <h1 class="ui violet inverted header">图书管理系统</h1>
+          <div class="right menu">
+            <div class="item">
+              <div class="item" style="position: relative; left: 40px;">
+                <i class="circular small inverted teal user icon"></i>
+                </div>
+            </div>
+            <div class="item">
+                <div class="ui big red button" onclick="breakOut()">退出登录</div>
+            </div>
+          </div>
+        </div>
+    </div>
+
+
+    <div class="ui large vertical menu" id="leftMenu">
+        <div class="item">
+          <div class="header">书籍管理</div>
+          <div class="menu">
+            <a class="item" href="admin_addBook.html">录入新书</a>
+
+            <a class="item" href="admin_searchBook.html">查询书籍</a>
+            <a class="item" href="admin_chart.html">书籍数据分析</a>
+          </div>
+        </div>
+        
+        <div class="item">
+          <div class="header">借阅信息</div>
+          <div class="menu">
+            <a class="item" href="admin_allRecord.html">所有借阅记录</a>
+          </div>
+        </div>
+        <div class="item">
+          <div class="header">管理员信息管理</div>
+          <div class="menu">
+            <a class="item" href="admin_adminConfig.html">管理员信息</a>
+          </div>
+        </div>
+<!--        <div class="item">-->
+<!--            <div class="header">支持</div>-->
+<!--            <div class="menu">-->
+<!--              <a class="item" href="admin_Support.html">E-mail Support</a>-->
+<!--            </div>-->
+<!--          </div>-->
+      </div>
+      <div class="mine" id="mine">
+        <div id="chart" style="margin-top: 3%; left: 20%; width: 50%;height: 85%;">
+        
+        </div>
+          
+      </div>
+      <div class="ui inverted segment" id="bottoms">
+        <p>Library System</p>
+      </div>
+      <div class="ui modal" id="break">
+        <i class="close icon"></i>
+        <div class="header">
+          确定退出
+        </div>
+        
+        <div class="actions">
+            <div class="ui red deny button">
+              取消
+            </div>
+            <div class="ui positive right labeled icon button">
+              确定
+              <i class="checkmark icon"></i>
+            </div>
+        </div>
+     </div>
+    <div class="ui modal"  id="breakSuccess" style="position: absolute;left: 70%;width: 30%;">
+        <div class="ui icon header">
+            <i class="green large arrow circle right icon"></i>
+            退出成功
+        </div>
+  </div>
+</body>
+<script type="text/javascript">
+    $.ajax({
+            type: 'POST',
+            url: '/chart',
+            data: {
+                
+            },
+            success:function (data) {
+                var list = [];
+                for(i in data){
+                    var one = {};
+                    one.value = data[i].count;
+                    one.name = data[i].category;
+                    list.push(one);
+                }
+                var dom = document.getElementById("chart");
+                var myChart = echarts.init(dom);
+                var app = {};
+                
+                var option;
+                
+                
+                
+                option = {
+                    title: {
+                        text: '图书种类分析图',
+
+                        left: 'center'
+                    },
+                    tooltip: {
+                        trigger: 'item',
+                        formatter: '{a} <br/>{b} : {c} ({d}%)'
+                    },
+                    legend: {
+                        left: 'top',
+                        top: 'bottom',
+
+                    },
+                    toolbox: {
+                        show: true,
+                        feature: {
+                            mark: {show: true},
+                            dataView: {show: true, readOnly: false},
+                            restore: {show: false},
+                            saveAsImage: {show: true}
+                        }
+                    },
+                    series: [
+                        {
+                            name: '图书种类',
+                            type: 'pie',
+                            radius: [25, 140],
+                            center: ['48%', '50%'],
+                            roseType: 'area',
+                            itemStyle: {
+                                borderRadius: 5
+                            },
+                            data: list
+                        }
+                    ]
+                };
+                
+                if (option && typeof option === 'object') {
+                    myChart.setOption(option);
+                }
+                
+            }
+        })
+
+
+</script>
+<script>
+  function breakOut(){
+    $('#break').modal('show')
+    .modal({
+          onApprove : function() {
+                 $('#breakSuccess').modal('show')
+                  setTimeout(function(){
+                    window.location.href = "login.html" 
+                  }, 1500);
+      
+           }
+     })
+  }
+</script>
+</html>

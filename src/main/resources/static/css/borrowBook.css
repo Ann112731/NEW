@@ -1,0 +1,67 @@
+#searchbook{
+    position: relative;
+    top: 2%;
+    width: 40%;
+    left: 10%;
+}
+
+
+
+.mine{
+    position: relative;
+    bottom: 79%;
+    width: 79.9%;
+    height: 77%;
+
+    left: 20%;
+    
+}
+
+
+
+#search{
+    position: relative;
+    left: 10%;
+    top: 2%;
+}
+
+
+#result{
+    position: relative;
+    top: 3%;
+}
+
+#select{
+    position: relative;
+    left: 10%;
+    top: 2%;
+}
+
+.none{
+    text-align: center;
+    font-size: 20px;
+}
+
+.page{
+     position: relative;
+     left: 39%; 
+     
+} 
+
+.pagination{list-style: none; text-align: center;margin: 0 auto;} 
+.pagination > li {float: left; margin: 0 5px; }
+a{
+    color:cornsilk
+}
+
+a:hover{
+    color: rgb(245, 199, 16);
+}
+[v-cloak] {display: none; } 
+
+
+#borrowSuccess{
+    position: absolute;
+    left: 70%;
+    width: 30%;
+}

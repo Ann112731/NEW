@@ -1,0 +1,30 @@
+.mine{
+    position: relative;
+    bottom: 79%;
+    width: 79.9%;
+    height: 77%;
+    left: 20%;
+    
+
+}
+
+
+#card{
+    position: relative;
+    top: 5%;
+    left: 30%;
+}
+
+#github{
+    border-top: #E8E9E9 solid;
+}
+
+#github:hover{
+    cursor: pointer;
+    color: dodgerblue;
+    
+}
+
+#leftMenu{
+    height: 75%;
+}

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lyx.library.dao.AdminDao">
+
+    <select id="listAdmin" resultType="com.lyx.library.pojo.Admin">
+        select *
+        from `admin`
+    </select>
+
+
+    <insert id="addAdmin"  parameterType="com.lyx.library.pojo.Admin">
+        insert into  `admin`(`adminname`,`password`)
+        values (#{adminname},#{password})
+    </insert>
+
+    <update id="updateAdmin" parameterType="com.lyx.library.pojo.UpdateAdmin">
+        update `admin`
+        set adminname=#{adminname},password=#{password}
+        where adminname=#{oldadminname}
+    </update>
+
+</mapper>
